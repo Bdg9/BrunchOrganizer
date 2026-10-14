@@ -1,0 +1,11 @@
+services:
+  brunch:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"   # à placer derrière un reverse proxy HTTPS
+    volumes:
+      - brunch-data:/data
+
+volumes:
+  brunch-data:

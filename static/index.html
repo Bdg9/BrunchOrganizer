@@ -1,0 +1,334 @@
+<title>Brunch au château</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap">
+<style>
+  /* Mobile-only: a striped café awning over a sage ground, one scrolling column,
+     items on the left, who brings them on the right. */
+  :root {
+    --bg: #e9f1e1;
+    --card: #fbfdf7;
+    --ink: #3a1a2b;
+    --ink-soft: #7a5a69;
+    --line: #cfdcc4;
+    --berry: #d4486b;
+    --berry-ink: #ffffff;
+    --apricot: #f6a65a;
+    --apricot-soft: #fde6cc;
+    --mine: #3a1a2b;
+    --mine-ink: #fbfdf7;
+    --stripe-b: #fbe3e8;
+    --font-display: "Young Serif", Georgia, serif;
+    --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1d1420; --card: #2b1e30; --ink: #f7eadb; --ink-soft: #bfa5b3; --line: #43324a;
+      --berry: #e0607f; --berry-ink: #1d1420; --apricot: #f6a65a; --apricot-soft: #4a3326;
+      --mine: #f7eadb; --mine-ink: #1d1420; --stripe-b: #4a2a38;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1d1420; --card: #2b1e30; --ink: #f7eadb; --ink-soft: #bfa5b3; --line: #43324a;
+    --berry: #e0607f; --berry-ink: #1d1420; --apricot: #f6a65a; --apricot-soft: #4a3326;
+    --mine: #f7eadb; --mine-ink: #1d1420; --stripe-b: #4a2a38;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: 16px; line-height: 1.4;
+    padding-inline: 16px; padding-block: 0 40px;
+  }
+  .wrap { max-width: 460px; margin-inline: auto; }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--apricot); outline-offset: 2px; }
+
+  /* awning */
+  .awning {
+    height: 26px; margin-inline: -16px;
+    background: repeating-linear-gradient(90deg, var(--berry) 0 28px, var(--stripe-b) 28px 56px);
+    position: relative;
+  }
+  .awning::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 14px;
+    background: repeating-linear-gradient(90deg, var(--berry) 0 28px, var(--stripe-b) 28px 56px);
+    -webkit-mask: radial-gradient(circle at 14px 0, #000 13.5px, transparent 14px) 0 0 / 28px 100% repeat-x;
+            mask: radial-gradient(circle at 14px 0, #000 13.5px, transparent 14px) 0 0 / 28px 100% repeat-x;
+  }
+
+  header { padding-top: 40px; display: flex; flex-direction: column; gap: 12px; }
+  h1 {
+    font-family: var(--font-display); font-weight: 400; font-size: 2.4rem; line-height: 1.05;
+    margin: 0; text-wrap: balance;
+  }
+  .when { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .when li {
+    background: var(--apricot-soft); border-radius: 999px; padding: 6px 12px;
+    font-weight: 600; font-size: 0.9rem;
+  }
+  .where { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
+  .where a { color: var(--berry); font-weight: 600; text-underline-offset: 3px; }
+  .intro { margin: 0; color: var(--ink-soft); font-size: 0.95rem; max-width: 36ch; }
+
+  /* who am I */
+  .me {
+    margin-top: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+  }
+  .me label { font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+  .me input {
+    flex: 1; min-width: 0; border: 0; border-bottom: 2px solid var(--line); background: transparent;
+    padding: 4px 2px; font-weight: 600; font-size: 1.05rem; border-radius: 0;
+  }
+  .me input:focus { outline: none; border-color: var(--berry); }
+  .me.need { animation: nudge .4s; border-color: var(--berry); }
+  @keyframes nudge { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+  /* list */
+  .cols {
+    display: grid; grid-template-columns: 5fr 6fr; gap: 12px;
+    margin: 28px 4px 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .row {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    display: grid; grid-template-columns: 5fr 6fr; gap: 12px; padding: 12px 12px 12px 14px;
+    align-items: start;
+  }
+  .item { min-width: 0; display: flex; align-items: flex-start; gap: 6px; }
+  .item b { font-weight: 600; font-size: 1.02rem; overflow-wrap: anywhere; }
+  .del {
+    border: 0; background: transparent; color: var(--ink-soft); font-size: 1.1rem; line-height: 1;
+    padding: 2px 6px; border-radius: 8px; margin-left: auto;
+  }
+  .who { min-width: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .chip {
+    border: 0; border-radius: 999px; padding: 5px 11px; font-size: 0.9rem; font-weight: 600;
+    background: var(--apricot-soft); color: var(--ink); overflow-wrap: anywhere; text-align: left;
+  }
+  .chip.mine { background: var(--mine); color: var(--mine-ink); padding-right: 9px; }
+  .chip.mine::after { content: " ×"; opacity: .75; }
+  .chip:not(.mine) { cursor: default; }
+  .join {
+    border: 2px dashed var(--berry); background: transparent; color: var(--berry);
+    border-radius: 999px; padding: 3px 11px; font-weight: 700; font-size: 0.88rem;
+  }
+  .join:active { background: var(--berry); color: var(--berry-ink); }
+  .nobody { color: var(--ink-soft); font-size: 0.88rem; font-style: italic; }
+
+  .empty {
+    border: 2px dashed var(--line); border-radius: 16px; padding: 22px 18px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; color: var(--ink); margin-bottom: 4px; }
+
+  /* add */
+  .add { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .add form { display: flex; gap: 8px; }
+  .add input {
+    flex: 1; min-width: 0; border: 2px solid var(--line); background: var(--card); border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .add input:focus { outline: none; border-color: var(--berry); }
+  .add button[type="submit"] {
+    border: 0; background: var(--berry); color: var(--berry-ink); border-radius: 14px;
+    padding: 0 18px; font-weight: 700;
+  }
+  .sugg { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .sugg span { font-size: 0.8rem; color: var(--ink-soft); font-weight: 600; margin-right: 2px; }
+  .sugg button {
+    border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 11px;
+    font-size: 0.85rem;
+  }
+
+  .toast {
+    position: fixed; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    max-width: 428px; margin-inline: auto; background: var(--mine); color: var(--mine-ink);
+    border-radius: 14px; padding: 12px 16px; font-weight: 600; font-size: 0.92rem;
+    transition: opacity .2s, transform .2s;
+  }
+  .toast[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) { .me.need { animation: none; } .toast { transition: none; } }
+</style>
+
+<div class="awning" aria-hidden="true"></div>
+<div class="wrap">
+  <header>
+    <h1>Brunch au château</h1>
+    <ul class="when">
+      <li>Dimanche 18 octobre</li>
+      <li>11h</li>
+    </ul>
+    <p class="where">Chemin de Renens 16 · <a href="https://www.google.com/maps/search/?api=1&query=Chemin+de+Renens+16" target="_blank" rel="noopener">Voir sur la carte</a></p>
+    <p class="intro">Ajoute ce que tu apportes, ou clique sur « + moi » à côté d’un truc déjà listé. Plusieurs personnes peuvent apporter la même chose.</p>
+  </header>
+
+  <div class="me" id="me">
+    <label for="name">Ton prénom</label>
+    <input id="name" type="text" maxlength="24" autocomplete="given-name" placeholder="ex. Barbara">
+  </div>
+
+  <div class="cols" aria-hidden="true"><span>Ce qu’on mange</span><span>Qui l’apporte</span></div>
+  <ul class="list" id="list" aria-live="polite"></ul>
+
+  <div class="add">
+    <form id="addForm">
+      <input id="newItem" type="text" maxlength="40" autocomplete="off" placeholder="Ajouter quelque chose…" aria-label="Nouvel élément">
+      <button type="submit">Ajouter</button>
+    </form>
+    <div class="sugg" id="sugg"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  var SUGGESTIONS = ["Croissants", "Jus d’orange", "Café", "Œufs brouillés", "Salade de fruits", "Pain et confiture", "Fromages", "Gâteau"];
+  var items = [], signups = [], me = "", ready = false;
+
+  var $list = document.getElementById("list"), $name = document.getElementById("name"),
+      $me = document.getElementById("me"), $sugg = document.getElementById("sugg"),
+      $toast = document.getElementById("toast"), $form = document.getElementById("addForm"),
+      $new = document.getElementById("newItem");
+
+  try { me = localStorage.getItem("brunch-name") || ""; } catch (e) {}
+  $name.value = me;
+  $name.addEventListener("input", function () {
+    me = $name.value.trim();
+    try { localStorage.setItem("brunch-name", me); } catch (e) {}
+    render();
+  });
+
+  var toastTimer;
+  function toast(msg) {
+    $toast.textContent = msg; $toast.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { $toast.hidden = true; }, 3200);
+  }
+  function same(a, b) { return a.trim().toLowerCase() === b.trim().toLowerCase(); }
+  function needName() {
+    $me.classList.remove("need"); void $me.offsetWidth; $me.classList.add("need");
+    $name.focus(); toast("Écris d’abord ton prénom.");
+  }
+  function failed(e) {
+    toast(e && e.message ? e.message : "Oups, ça n’a pas marché. Réessaie dans un instant.");
+  }
+
+  function api(method, path, body) {
+    return fetch(path, {
+      method: method,
+      headers: body ? { "Content-Type": "application/json" } : {},
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (r) {
+      return r.json().then(function (j) {
+        if (!r.ok) throw new Error(j && j.error ? j.error.charAt(0).toUpperCase() + j.error.slice(1) + "." : "Erreur");
+        return j;
+      });
+    }).then(apply);
+  }
+  function apply(state) {
+    items = state.items || []; signups = state.signups || [];
+    ready = true; render();
+  }
+  function refresh() {
+    return fetch("/api/state", { cache: "no-store" }).then(function (r) { return r.json(); }).then(apply);
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function render() {
+    $list.textContent = "";
+    if (!ready) {
+      $list.appendChild(el("li", "empty", "Chargement de la liste…"));
+    } else if (!items.length) {
+      var li = el("li", "empty");
+      li.appendChild(el("strong", null, "La table est vide"));
+      li.appendChild(el("span", null, "Lance le buffet : ajoute un premier plat ci-dessous, ou choisis une idée."));
+      $list.appendChild(li);
+    }
+    items.forEach(function (it) {
+      var ppl = signups.filter(function (s) { return s.itemId === it.id; });
+      var row = el("li", "row");
+      var left = el("div", "item");
+      left.appendChild(el("b", null, it.name));
+      if (!ppl.length) {
+        var d = el("button", "del", "×"); d.type = "button"; d.setAttribute("aria-label", "Supprimer " + it.name);
+        d.addEventListener("click", function () { guard(function () { return api("DELETE", "/api/items/" + it.id); }); });
+        left.appendChild(d);
+      }
+      var right = el("div", "who");
+      var mineHere = null;
+      ppl.forEach(function (s) {
+        var isMine = me && same(s.who, me);
+        if (isMine) mineHere = s;
+        var c = el(isMine ? "button" : "span", "chip" + (isMine ? " mine" : ""), s.who);
+        if (isMine) {
+          c.type = "button"; c.setAttribute("aria-label", "Retirer " + s.who + " de " + it.name);
+          c.addEventListener("click", function () { guard(function () { return api("DELETE", "/api/signups/" + s.id); }); });
+        }
+        right.appendChild(c);
+      });
+      if (!mineHere) {
+        var j = el("button", "join", "+ moi"); j.type = "button";
+        j.setAttribute("aria-label", "Je m’ajoute à " + it.name);
+        j.addEventListener("click", function () {
+          if (!me) return needName();
+          guard(function () { return api("POST", "/api/signups", { itemId: it.id, who: me }); });
+        });
+        right.appendChild(j);
+      }
+      if (!ppl.length) right.insertBefore(el("span", "nobody", "personne encore"), right.firstChild);
+      row.appendChild(left); row.appendChild(right);
+      $list.appendChild(row);
+    });
+    renderSugg();
+  }
+
+  function renderSugg() {
+    $sugg.textContent = "";
+    if (!ready) return;
+    var left = SUGGESTIONS.filter(function (s) { return !items.some(function (i) { return same(i.name, s); }); });
+    if (!left.length) return;
+    $sugg.appendChild(el("span", null, "Idées :"));
+    left.forEach(function (s) {
+      var b = el("button", null, s); b.type = "button";
+      b.addEventListener("click", function () { addItem(s); });
+      $sugg.appendChild(b);
+    });
+  }
+
+  var busy = false;
+  function guard(fn) {
+    if (busy) return;
+    busy = true;
+    Promise.resolve().then(fn).catch(failed).then(function () { busy = false; });
+  }
+
+  function addItem(name) {
+    name = name.trim();
+    if (!name) return;
+    var dup = items.filter(function (i) { return same(i.name, name); })[0];
+    if (dup) { toast("« " + dup.name + " » est déjà sur la liste. Clique sur « + moi »."); return; }
+    guard(function () { return api("POST", "/api/items", { name: name }); });
+  }
+  $form.addEventListener("submit", function (e) {
+    e.preventDefault(); addItem($new.value); $new.value = "";
+  });
+
+  render();
+
+  // La liste se met à jour toute seule toutes les 5 secondes, et au retour sur l’onglet.
+  refresh().catch(function () { ready = true; render(); toast("Impossible de charger la liste."); });
+  setInterval(function () { if (!document.hidden && !busy) refresh().catch(function () {}); }, 5000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh().catch(function () {}); });
+})();
+</script>
